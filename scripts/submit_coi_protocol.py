@@ -54,7 +54,7 @@ MATERIAL_CATALOG_MAP = {
     ("Oligonucleotide",    "FishR1 primer, 10 µM"):       (31, None),
     ("Oligonucleotide",    "FishR2 primer, 10 µM"):       (31, None),
     ("Agarose",            None):                         (9,  None),
-    ("Nucleic acid stain", "SYBR Safe"):                  (None, None),  # CATALOG GAP: no stain / intercalator type exists
+    ("Nucleic acid stain", "SYBR Safe"):                  (63, None),    # "Nucleic acid stain" (added after initial gap report)
     ("Buffer",             "1X TBE"):                     (34, None),
     ("DNA ladder",         "100 bp ladder"):              (10, None),
     ("Loading dye",        "6X gel loading dye"):         (11, None),
