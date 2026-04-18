@@ -22,17 +22,22 @@ Meta-thesis ("garage genomics"): what used to cost $50k is now a Pi, a few open-
 
 ### LibreBiotech
 
-- Published protocol: **procedure id = 55**, version id = 53, `version_number = "0.1.0"`, **visibility = public**
-  - Title: *COI DNA Barcoding for Consumer Fish Samples*
-  - Category: `measurement_qc`
+- **Group "Garage Genomics"** — id **16**, Kevin is Leader (created 2026-04-18)
+- **Investigation "Sushi Truth: Consumer Fish Mislabeling"** — id **5**, under group 16, visibility `group`, license CC-BY-4.0
+- **Protocol** — procedure id **55**, version id 53, `version_number = "0.1.0"`, visibility `public`
+  - Title: *COI DNA Barcoding for Consumer Fish Samples*, category `measurement_qc`
   - v0.1.0 pilot, **not yet dry-run validated** — expect v0.1.x patches
 - Catalog resolution done: all 6 equipment + 13 material rows resolved (Nucleic acid stain type 63 was added by the platform after initial gap report)
-- No Investigation or Study created yet
+- **No Study, Process, or Sample records yet** — that's the next ISA level to scaffold
 
 ### Scripts (`scripts/`)
 
-- `submit_coi_protocol.py` — POSTs the monolithic COI protocol. Equipment/material catalog IDs hard-coded in `EQUIPMENT_CATALOG_MAP` / `MATERIAL_CATALOG_MAP`. Flags: `--list-catalog`, `--dry-run`.
-- `create_investigation.py` — creates *"Sushi Truth: Consumer Fish Mislabeling"* investigation. **Not yet run — blocked on group selection.**
+All three have been run once already. Kept in repo for reproducibility and fork templating.
+
+- `create_group.py` — POSTs *Garage Genomics* to `/groups`. Ran once → id 16.
+- `create_investigation.py` — POSTs *Sushi Truth* to `/investigations`. Ran once (`--group-id 16`) → id 5.
+- `submit_coi_protocol.py` — POSTs the monolithic COI protocol with all nested steps/equipment/materials/references. Ran once → procedure id 55. Hard-coded catalog IDs in `EQUIPMENT_CATALOG_MAP` / `MATERIAL_CATALOG_MAP`. Flags: `--list-catalog`, `--dry-run`.
+- *Not yet written:* `create_study.py` (Pilot Season 1), `create_sample.py` (per-sample logging).
 
 ## Key decisions and why
 
@@ -44,11 +49,11 @@ Meta-thesis ("garage genomics"): what used to cost $50k is now a Pi, a few open-
 
 ## Pending / blocked
 
-- **New LibreBiotech group for garage-genomics work.** No `POST /groups` endpoint exists in the current API; waiting on feature request from LibreBiotech. Once unblocked, re-run `create_investigation.py --group-id <N>`. Existing groups are all research-scoped and don't fit a citizen-science investigation (user declined to reuse them).
+- **Study scaffold** — next ISA level under Investigation 5. Suggested: *"Pilot Season 1 — [city]"*. No `create_study.py` yet.
 - **Wet-lab dry run** end-to-end on 3 sashimi samples, logging every step in LibreBiotech. Must happen before any filming. This surfaces v0.1.1 patches and the real LibreBiotech UX gaps.
 - **AU reagent sourcing section** to add to the protocol (NEB→Genesearch, IDT AU, Merck Australia, Astral Scientific, Rowe Scientific; ABN tip; BioFoundry partnership).
 - **Sequencing strategy for AU viewers** — probably BioFoundry partnership for the pilot; revisit nanopore in a later episode.
-- **Investigation visibility** decision — current script defaults to `group`. Can be flipped via `PUT /investigations/{id}` once seeded.
+- **Investigation visibility flip** — currently `group`. Decide whether to flip to `public` (`PUT /investigations/5`) before or after sample data starts flowing in.
 - **Idea parked**: suggest to LibreBiotech they integrate with a sequencing provider (Plasmidsaurus / Macrogen / ONT) via a `POST /samples/{id}/sequence` broker endpoint. Not "LibreBiotech runs sequencing" — that's scope creep — but "LibreBiotech brokers the handoff." User wants to leave this alone for now.
 - **API key rotation.** The key used in this session was pasted in chat — treat as compromised. Revoke at librebiotech.org → API Keys → create fresh.
 
@@ -56,10 +61,10 @@ Meta-thesis ("garage genomics"): what used to cost $50k is now a Pi, a few open-
 
 1. `cd ~/garage-genomics && git log --oneline`
 2. Rotate and export a fresh LibreBiotech API key: `export LIBREBIOTECH_API_KEY=...`
-3. Decide group strategy (new group created in UI, or proceed with an existing one) and update `create_investigation.py` or pass `--group-id`.
-4. `python3 scripts/create_investigation.py --dry-run` then without `--dry-run`.
-5. Write a `create_study.py` under that Investigation (*Pilot Season 1 — [city]*).
-6. Start the wet-lab dry run. Order IDT primers + NEB reagents — 2-week lead time.
+3. Sanity check: `GET /api.php/v1/groups/16` and `/investigations/5` still resolve as expected.
+4. Write `create_study.py` under Investigation 5 (*Pilot Season 1 — [city]*).
+5. Order IDT primers + NEB reagents — 2-week lead time.
+6. Start the wet-lab dry run.
 
 ## Reference
 
