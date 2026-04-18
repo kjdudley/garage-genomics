@@ -33,30 +33,32 @@ API_BASE = "https://librebiotech.org/api.php/v1"
 
 EQUIPMENT_CATALOG_MAP = {
     # equipment name below  ->  equipment_type_id  (int, from /catalog/equipment-types)
-    "Thermocycler":               None,
-    "Gel documentation system":   None,
-    "Heat block":                 None,
-    "Microcentrifuge":            None,
-    "Gel electrophoresis system": None,
-    "Pipettes":                   None,
+    "Thermocycler":               1,    # "Thermal cycler"
+    "Gel documentation system":   27,   # "Gel imager / UV transilluminator" (specs override to blue-LED)
+    "Heat block":                 2,
+    "Microcentrifuge":            4,
+    "Gel electrophoresis system": 13,
+    "Pipettes":                   14,   # "Micropipette"
 }
 
 # (material_type_name, product_name_or_None)  ->  (material_type_id, material_product_id_or_None)
 # product_id may stay None to submit as "generic (any)" with free-text notes.
 MATERIAL_CATALOG_MAP = {
-    ("Chelating resin",    None):                         (None, None),
-    ("Protease",           "Proteinase K"):               (None, None),
-    ("PCR master mix",     None):                         (None, None),
-    ("Oligonucleotide",    "FishF1 primer, 10 µM"):       (None, None),
-    ("Oligonucleotide",    "FishF2 primer, 10 µM"):       (None, None),
-    ("Oligonucleotide",    "FishR1 primer, 10 µM"):       (None, None),
-    ("Oligonucleotide",    "FishR2 primer, 10 µM"):       (None, None),
-    ("Agarose",            None):                         (None, None),
-    ("Nucleic acid stain", "SYBR Safe"):                  (None, None),
-    ("Buffer",             "1X TBE"):                     (None, None),
-    ("DNA ladder",         "100 bp ladder"):              (None, None),
-    ("Loading dye",        "6X gel loading dye"):         (None, None),
-    ("Water",              "Nuclease-free water"):        (None, None),
+    # (type_name, product_name) -> (material_type_id, material_product_id)
+    # None product_id = "generic (any)" with free-text notes.
+    ("Chelating resin",    None):                         (38, None),    # "Lysis solution" — closest fit for Chelex-100
+    ("Protease",           "Proteinase K"):               (16, None),    # "Proteinase K" (material type itself)
+    ("PCR master mix",     None):                         (29, None),    # OneTaq not in catalog → generic
+    ("Oligonucleotide",    "FishF1 primer, 10 µM"):       (31, None),    # "Primer (custom)"
+    ("Oligonucleotide",    "FishF2 primer, 10 µM"):       (31, None),
+    ("Oligonucleotide",    "FishR1 primer, 10 µM"):       (31, None),
+    ("Oligonucleotide",    "FishR2 primer, 10 µM"):       (31, None),
+    ("Agarose",            None):                         (9,  None),
+    ("Nucleic acid stain", "SYBR Safe"):                  (None, None),  # CATALOG GAP: no stain / intercalator type exists
+    ("Buffer",             "1X TBE"):                     (34, None),
+    ("DNA ladder",         "100 bp ladder"):              (10, None),
+    ("Loading dye",        "6X gel loading dye"):         (11, None),
+    ("Water",              "Nuclease-free water"):        (1,  None),
 }
 
 
