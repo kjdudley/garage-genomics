@@ -1,0 +1,20 @@
+{
+  "name": "COI fish barcoding (Ward 2005)",
+  "version": "0.1.0",
+  "description": "Amplifies the ~655 bp COI barcode region from teleost fish using the FishF1/F2 + FishR1/R2 primer cocktail.",
+  "lid_heating": true,
+  "program": [
+    { "step": "initial_denature", "temp_c": 94, "seconds": 120 },
+    {
+      "step": "cycles",
+      "repeats": 35,
+      "substeps": [
+        { "label": "denature", "temp_c": 94, "seconds": 30 },
+        { "label": "anneal",   "temp_c": 52, "seconds": 30 },
+        { "label": "extend",   "temp_c": 72, "seconds": 45 }
+      ]
+    },
+    { "step": "final_extension", "temp_c": 72, "seconds": 600 },
+    { "step": "hold", "temp_c": 4 }
+  ]
+}
