@@ -76,7 +76,7 @@ DESCRIPTION = (
 CATEGORY = "measurement_qc"   # valid: sample_prep | measurement_qc | data_transformation | sequencing | management
 VISIBILITY = "public"
 LICENSE = "CC-BY-4.0"
-EXTERNAL_URL = "https://github.com/REPLACE_ME/sushi-truth/blob/main/protocols/coi-fish-barcoding.md"
+EXTERNAL_URL = "https://github.com/kjdudley/garage-genomics/blob/main/protocols/coi-fish-barcoding/README.md"
 
 VERSION_NUMBER = "0.1.0"
 EFFECTIVE_DATE = "2026-04-18"
