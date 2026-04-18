@@ -185,6 +185,37 @@ MATERIAL_ROWS = [
     {"type": "Water",              "product": "Nuclease-free water",        "quantity": "q.s.", "unit": "µL",          "notes": "To 25 µL per reaction"},
 ]
 
+# Per-run parameters captured on each Assay (inline row expander on the
+# measurement matrix). ISA-Tab exports them as Parameter Value[name] columns
+# in the Assay Table. Keep the set tight — one row per variable the
+# troubleshooting table actually calls out as run-tunable.
+#
+# Units are identified by CURIE (compact URI) from a standard ontology —
+# portable across LibreBiotech instances and FAIR-aware consumers. UO is the
+# Units of Measurement Ontology. See
+# librebiotech.org/?action=docs&page=api#ontology-term-ids for vocabulary.
+
+PARAMETER_ROWS = [
+    {
+        "name":            "annealing_temp_c",
+        "data_type":       "number",
+        "unit_term_curie": "UO:0000027",   # degree Celsius
+        "required":        False,
+        "default_value":   "52",
+        "display_order":   1,
+        "description":     "Annealing temperature for COI PCR cycling. Default 52°C works for the Ward 2005 primer cocktail. Raise to 54°C if the gel shows multiple bands (non-specific priming).",
+    },
+    {
+        "name":            "chelex_incubation_time_min",
+        "data_type":       "number",
+        "unit_term_curie": "UO:0000031",   # minute
+        "required":        False,
+        "default_value":   "30",
+        "display_order":   2,
+        "description":     "Incubation time at 56°C for Chelex/Proteinase K lysis. Default 30 min suffices for fresh tissue. Extend to 60–120 min for cooked or heavily processed samples.",
+    },
+]
+
 REFERENCES = [
     {"citation": "Ward RD, Zemlak TS, Innes BH, Last PR, Hebert PDN (2005). DNA barcoding Australia's fish species. Phil Trans R Soc B 360:1847–57.",
      "doi": "10.1098/rstb.2005.1716", "url": None, "ref_type": "paper"},
@@ -264,9 +295,17 @@ def build_materials():
     return out, gaps
 
 
+def build_parameters():
+    # CURIEs are resolved server-side (LibreBiotech PR 3 / federated-FAIR
+    # identity contract). No build-time lookup needed; resolution errors
+    # surface at POST as 400 with a clear message.
+    return [dict(row) for row in PARAMETER_ROWS], []
+
+
 def build_payload():
     equipment, eq_gaps = build_equipment()
     materials, mat_gaps = build_materials()
+    parameters, param_gaps = build_parameters()
     payload = {
         "title": TITLE,
         "description": DESCRIPTION,
@@ -285,10 +324,11 @@ def build_payload():
             "steps": [{"content": s} for s in STEPS],
             "equipment": equipment,
             "materials": materials,
+            "parameters": parameters,
             "references": REFERENCES,
         },
     }
-    return payload, eq_gaps + mat_gaps
+    return payload, eq_gaps + mat_gaps + param_gaps
 
 
 def main():
