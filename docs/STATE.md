@@ -24,9 +24,11 @@ Meta-thesis ("garage genomics"): what used to cost $50k is now a Pi, a few open-
 
 - **Group "Garage Genomics"** — id **16**, Kevin is Leader (created 2026-04-18)
 - **Investigation "Sushi Truth: Consumer Fish Mislabeling"** — id **5**, under group 16, visibility `group`, license CC-BY-4.0
-- **Protocol** — procedure id **55**, version id 53, `version_number = "0.1.0"`, visibility `public`
+- **Protocol** — procedure id **56**, current version v0.1.1 (version id 58), visibility `public`
   - Title: *COI DNA Barcoding for Consumer Fish Samples*, category `measurement_qc`
-  - v0.1.0 pilot, **not yet dry-run validated** — expect v0.1.x patches
+  - v0.1.0 (id 56) → v0.1.1 (id 58, adds `annealing_temp_c` + `chelex_incubation_time_min` parameters)
+  - **Pilot not yet dry-run validated** — expect v0.1.x patches; v0.1.2 will add ISA Assay classification (OBI:0002767 amplicon sequencing + OBI:0000695 chain-termination) before first wet-lab Process
+  - History: originally procedure id 55, deleted 2026-04-19 via a DELETE-scope API bug (since hotfixed) while repairing an empty v0.1.2 bump. Recreated cleanly as procedure 56.
 - Catalog resolution done: all 6 equipment + 13 material rows resolved (Nucleic acid stain type 63 was added by the platform after initial gap report)
 - **No Study, Process, or Sample records yet** — that's the next ISA level to scaffold
 
@@ -36,7 +38,8 @@ All three have been run once already. Kept in repo for reproducibility and fork 
 
 - `create_group.py` — POSTs *Garage Genomics* to `/groups`. Ran once → id 16.
 - `create_investigation.py` — POSTs *Sushi Truth* to `/investigations`. Ran once (`--group-id 16`) → id 5.
-- `submit_coi_protocol.py` — POSTs the monolithic COI protocol with all nested steps/equipment/materials/references. Ran once → procedure id 55. Hard-coded catalog IDs in `EQUIPMENT_CATALOG_MAP` / `MATERIAL_CATALOG_MAP`. Flags: `--list-catalog`, `--dry-run`.
+- `submit_coi_protocol.py` — POSTs the monolithic COI protocol with all nested steps/equipment/materials/references. Current canonical procedure id **56** (re-created 2026-04-19 after the procedure-55 DELETE incident). Hard-coded catalog IDs in `EQUIPMENT_CATALOG_MAP` / `MATERIAL_CATALOG_MAP`. Flags: `--list-catalog`, `--dry-run`.
+- `bump_procedure_version.py` — POSTs v0.1.1 on procedure 56 (adds per-run parameters). `PROCEDURE_ID = 56`. Content inherited via import from `submit_coi_protocol.py` so the two sources can't drift.
 - *Not yet written:* `create_study.py` (Pilot Season 1), `create_sample.py` (per-sample logging).
 
 ## Key decisions and why
@@ -71,6 +74,6 @@ All three have been run once already. Kept in repo for reproducibility and fork 
 - LibreBiotech API base: `https://librebiotech.org/api.php/v1`
 - API docs: <https://librebiotech.org/?action=docs&page=api>
 - Protocol schema: <https://librebiotech.org/?action=docs&page=protocols#schema-reference>
-- Published protocol (API): `GET /api.php/v1/procedures/55`
+- Published protocol (API): `GET /api.php/v1/procedures/56`
 - Auth header: `X-API-Key: <key>`
 - Rate limit: 1000 req/hr per key

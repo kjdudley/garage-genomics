@@ -33,7 +33,7 @@ from submit_coi_protocol import (
     api,
 )
 
-PROCEDURE_ID = 55
+PROCEDURE_ID = 56
 
 VERSION_NUMBER = "0.1.1"
 EFFECTIVE_DATE = "2026-04-19"
